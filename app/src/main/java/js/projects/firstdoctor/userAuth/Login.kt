@@ -66,8 +66,13 @@ class Login : AppCompatActivity() {
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, HomePatient::class.java)
-                    startActivity(intent)
-                    finish()
+                    database.child("Users").child(auth.currentUser!!.uid).child("userName").get().addOnSuccessListener {mName ->
+                        intent.putExtra("userName", mName.value.toString())
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        startActivity(intent)
+                        finish()
+                    }
 
                 } else {
                     binding.progressBar.visibility = View.GONE

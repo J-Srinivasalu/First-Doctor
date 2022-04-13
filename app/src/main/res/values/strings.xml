@@ -24,4 +24,27 @@
     <string name="reset">Reset</string>
     <string name="reset_password">Reset\nPassword</string>
     <string name="select_role">Select Role</string>
+    <string name="explore">Explore</string>
+    <string name="consult_now">Consult now</string>
+    <string name="profile">Profile</string>
+    <string name="notification">Notification</string>
+    <string name="my_complaints">My Complaints</string>
+    <string name="settings">SETTINGS</string>
+    <string name="settings_">Settings</string>
+    <string name="first_doctor_title">FIRST DOCTOR</string>
+    <string name="research">Research</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+
+    <string name="open">Open navigation drawer</string>
+    <string name="close">Close navigation drawer</string>
+    <string name="welcome_to_first_doctor">Welcome to First Doctor</string>
+    <string name="logout">Logout</string>
+    <string name="update">Update</string>
+    <string name="reset_your_password">Reset your password</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="continue_">continue</string>
+    <string name="appointment_form">Appointment Form</string>
+    <string name="select_domain">Select Domain</string>
 </resources>

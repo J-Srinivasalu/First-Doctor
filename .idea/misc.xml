@@ -5,9 +5,14 @@
       <map>
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable-hdpi/background_day_view.xml" value="0.1725" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable-hdpi/drawable_underline.xml" value="0.1725" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/background_nav_items.xml" value="0.175" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/button_background.xml" value="0.1535" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/custom_pc_background.xml" value="0.179" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.179" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/ic_baseline_notifications_active_24.xml" value="0.179" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/ic_explore.xml" value="0.179" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/ic_setting.xml" value="0.179" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/menu_drawable_color_state.xml" value="0.175" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/drawable/progress_bar.xml" value="0.1535" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/font/bubblegum_sans.xml" value="0.14635416666666667" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/activity_forgot_password.xml" value="0.22826086956521738" />
@@ -18,6 +23,18 @@
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/activity_register.xml" value="0.22826086956521738" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/activity_sign_up.xml" value="0.22826086956521738" />
         <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/activity_welcome_screen.xml" value="0.264" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/fragment_consultation.xml" value="0.2" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/fragment_home.xml" value="0.2341485507246377" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/fragment_notification.xml" value="0.2341485507246377" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/fragment_profile.xml" value="0.2341485507246377" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/fragment_research.xml" value="0.2341485507246377" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/fragment_settings.xml" value="0.2341485507246377" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/frament_complaint.xml" value="0.2341485507246377" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/header.xml" value="0.2427536231884058" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/layout/menu_header.xml" value="0.2427536231884058" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/menu-v26/sidenav_menu.xml" value="0.259375" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/menu/home_page_bottom_nav.xml" value="0.1" />
+        <entry key="..\:/Git-Practice/FirstDoctor/app/src/main/res/menu/sidenav_menu.xml" value="0.259375" />
       </map>
     </option>
   </component>

@@ -80,8 +80,13 @@ class Register : AppCompatActivity() {
                 val userIdString = userId!!.uid
                 writeNewUser(userIdString,name, email, gender, "+$countryCode$mobileNo", age)
                 val intent = Intent(this, HomePatient::class.java)
-                startActivity(intent)
-                finish()
+                database.child("Users").child(auth.currentUser!!.uid).child("userName").get().addOnSuccessListener {mName ->
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    intent.putExtra("userName", mName.value.toString())
+                    startActivity(intent)
+                    finish()
+                }
             } else {
                 binding.progressBar.visibility = View.GONE
                 Toast.makeText(this, "Registration Failed!", Toast.LENGTH_SHORT).show()
