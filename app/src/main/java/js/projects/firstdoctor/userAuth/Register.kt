@@ -70,7 +70,7 @@ class Register : AppCompatActivity() {
         val pass = binding.pass.editText?.text.toString().trim()
         val name = binding.name.editText?.text.toString().trim()
         val age = binding.age.editText?.text.toString().trim()
-        val countryCode = binding.countryCodePicker.defaultCountryCodeAsInt
+        val countryCode = binding.countryCodePicker.selectedCountryCode
         val mobileNo = binding.mobileNo.editText?.text.toString().trim()
         val gender = binding.gender.editText?.text.toString().trim()
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
@@ -78,7 +78,7 @@ class Register : AppCompatActivity() {
                 Toast.makeText(this, "Registration Successfully", Toast.LENGTH_SHORT).show()
                 val userId = auth.currentUser
                 val userIdString = userId!!.uid
-                writeNewUser(userIdString,name, email, gender, "+$countryCode$mobileNo", age)
+                writeNewUser(userIdString,name, email, gender, countryCode, mobileNo, age)
                 val intent = Intent(this, HomePatient::class.java)
                 database.child("Users").child(auth.currentUser!!.uid).child("userName").get().addOnSuccessListener {mName ->
                     intent.flags =
@@ -94,11 +94,12 @@ class Register : AppCompatActivity() {
         }
     }
 
-    private fun writeNewUser(userId: String, name: String, email: String, gender: String, mobileNo:String, age:String) {
+    private fun writeNewUser(userId: String, name: String, email: String, gender: String, countryCode: String, mobileNo:String, age:String) {
         val user = User(
             userName = name,
             userEmail = email,
             userSex = gender,
+            userCC = countryCode,
             userMobile = mobileNo,
             userAge = age
         )

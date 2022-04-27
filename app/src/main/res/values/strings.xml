@@ -47,4 +47,14 @@
     <string name="continue_">continue</string>
     <string name="appointment_form">Appointment Form</string>
     <string name="select_domain">Select Domain</string>
+    <string name="consultation">Consultation</string>
+    <string name="chief_complaint">Chief Complaint</string>
+    <string name="record">Record</string>
+    <string name="cancel_record">Cancel Record</string>
+    <string name="play_record">Play Record</string>
+    <string name="stop_record">Stop Record</string>
+    <string name="previous_medical_history">Previous Medical History</string>
+    <string name="where_is_the_problem">Where is the problem</string>
+    <string name="add_picture">Add Picture</string>
+    <string name="add_images">Add Images</string>
 </resources>

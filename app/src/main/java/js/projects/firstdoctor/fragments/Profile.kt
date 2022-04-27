@@ -23,9 +23,12 @@ import js.projects.firstdoctor.utils.Connection
 
 class Profile : Fragment(R.layout.fragment_profile) {
 
+
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: DatabaseReference
     private lateinit var binding: FragmentProfileBinding
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
@@ -33,10 +36,18 @@ class Profile : Fragment(R.layout.fragment_profile) {
         database = Firebase.database.reference
         binding.progressBar.visibility = View.VISIBLE
         val user = mAuth.currentUser
+
         database.child("Users").child(user!!.uid).get().addOnSuccessListener {
             val mName = it.child("userName").value.toString()
             val mAge = it.child("userAge").value.toString()
             val mGender = it.child("userSex").value.toString()
+            var mCountryCode: String = it.child("userCC").value.toString()
+
+            if(mCountryCode == "null"){
+                database.child("Users").child(user.uid).child("userCC").setValue("91")
+                mCountryCode = "91"
+            }
+
             val mMobileNo = it.child("userMobile").value.toString()
             val mEmail = it.child("userEmail").value.toString()
 
@@ -45,9 +56,8 @@ class Profile : Fragment(R.layout.fragment_profile) {
                 age.editText?.setText(mAge)
                 gender.editText?.setText(mGender)
                 email.editText?.setText(mEmail)
-
-                countryCodePicker.setCountryForPhoneCode(mMobileNo.substring(1,3).toInt())
-                mobileNo.editText?.setText(mMobileNo.substring(3))
+                countryCodePicker.setCountryForPhoneCode(mCountryCode.toInt())
+                mobileNo.editText?.setText(mMobileNo)
 
                 progressBar.visibility = View.GONE
                 update.visibility = View.GONE
@@ -83,12 +93,12 @@ class Profile : Fragment(R.layout.fragment_profile) {
                 val email = binding.email.editText?.text.toString().trim()
                 val name = binding.name.editText?.text.toString().trim()
                 val age = binding.age.editText?.text.toString().trim()
-                val countryCode = binding.countryCodePicker.defaultCountryCodeAsInt
+                val countryCode = binding.countryCodePicker.selectedCountryCode
                 val mobileNo = binding.mobileNo.editText?.text.toString().trim()
                 val gender = binding.gender.editText?.text.toString().trim()
                 val userId = mAuth.currentUser
                 val userIdString = userId!!.uid
-                writeNewUser(userIdString,name, email, gender, "+$countryCode$mobileNo", age)
+                writeNewUser(userIdString,name, email, gender, countryCode, mobileNo, age)
             }
 
             binding.progressBar.visibility = View.GONE
@@ -119,11 +129,12 @@ class Profile : Fragment(R.layout.fragment_profile) {
         }
 
     }
-    private fun writeNewUser(userId: String, name: String, email: String, gender: String, mobileNo:String, age:String) {
+    private fun writeNewUser(userId: String, name: String, email: String, gender: String, countryCode: String, mobileNo:String, age:String) {
         val user = User(
             userName = name,
             userEmail = email,
             userSex = gender,
+            userCC = countryCode,
             userMobile = mobileNo,
             userAge = age
         )
@@ -183,6 +194,7 @@ class Profile : Fragment(R.layout.fragment_profile) {
             }
         }
     }
+
 
     private fun showCustomDialog() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
