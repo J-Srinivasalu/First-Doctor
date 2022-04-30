@@ -57,4 +57,9 @@
     <string name="where_is_the_problem">Where is the problem</string>
     <string name="add_picture">Add Picture</string>
     <string name="add_images">Add Images</string>
+    <string name="delete_pic">Delete pic</string>
+    <string name="picture_1">Picture 1</string>
+    <string name="add_file">Add file</string>
+    <string name="click_here_to_fill_consultation_form">Click here to fill consultation form</string>
+    <string name="hi">Hi,</string>
 </resources>

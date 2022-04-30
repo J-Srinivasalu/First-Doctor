@@ -1,4 +1,4 @@
-package js.projects.firstdoctor.fragments
+package js.projects.firstdoctor
 
 import android.Manifest
 import android.app.Activity
@@ -8,7 +8,10 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -17,7 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -25,8 +27,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import js.projects.firstdoctor.R
-import js.projects.firstdoctor.databinding.FragmentConsultationBinding
+import js.projects.firstdoctor.databinding.ActivityConsultNowBinding
 import js.projects.firstdoctor.model.Consult
 import java.io.File
 import java.io.IOException
@@ -34,8 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-class Consultation : Fragment(R.layout.fragment_consultation) {
+class ConsultNow : AppCompatActivity() {
 
     companion object {
         private const val LOG_TAG = "AudioRecordTest"
@@ -51,7 +51,7 @@ class Consultation : Fragment(R.layout.fragment_consultation) {
     private var permissionToReadStorage = false
     private var permissionToWriteStorage = false
     private var permissionToManageStorage = false
-    private lateinit var binding: FragmentConsultationBinding
+    private lateinit var binding: ActivityConsultNowBinding
     private lateinit var mAuth: FirebaseAuth
     private lateinit var database: DatabaseReference
 
@@ -60,28 +60,28 @@ class Consultation : Fragment(R.layout.fragment_consultation) {
 
     private fun requestPermission() {
         permissionToRecordAccepted = ContextCompat.checkSelfPermission(
-            requireContext(),
+            this,
             Manifest.permission.RECORD_AUDIO
         ) == PackageManager.PERMISSION_GRANTED
 
         permissionToCameraAccepted = ContextCompat.checkSelfPermission(
-            requireContext(),
+            this,
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
 
         permissionToReadStorage = ContextCompat.checkSelfPermission(
-            requireContext(),
+            this,
             Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             permissionToManageStorage = ContextCompat.checkSelfPermission(
-                requireContext(),
+                this,
                 Manifest.permission.MANAGE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         } else {
             permissionToWriteStorage = ContextCompat.checkSelfPermission(
-                requireContext(),
+                this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         }
@@ -163,13 +163,14 @@ class Consultation : Fragment(R.layout.fragment_consultation) {
     private var pic2Uri: Uri? = null
     private var pic3Uri: Uri? = null
     private var pdfUri: Uri? = null
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding = FragmentConsultationBinding.bind(view)
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityConsultNowBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        fileComp = requireContext().externalCacheDir?.absolutePath + "/recComp.mp3"
-        fileHistory = requireContext().externalCacheDir?.absolutePath + "/recHistory.mp3"
+        fileComp = externalCacheDir?.absolutePath + "/recComp.mp3"
+        fileHistory = externalCacheDir?.absolutePath + "/recHistory.mp3"
 
         permissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -224,7 +225,7 @@ class Consultation : Fragment(R.layout.fragment_consultation) {
             problemLocation.editText?.setOnClickListener {
                 var selectedIndex = 0
                 val problem = arrayOf("Oral", "Slein", "Secondary Oninion")
-                with(AlertDialog.Builder(requireContext())) {
+                with(AlertDialog.Builder(this@ConsultNow)) {
                     setTitle("where is the problem")
                     setSingleChoiceItems(
                         problem,
@@ -359,34 +360,11 @@ class Consultation : Fragment(R.layout.fragment_consultation) {
             upload.setOnClickListener {
                 if (checkFields()) {
                     upload()
-                    activity?.supportFragmentManager!!.beginTransaction().apply {
-                        replace(R.id.flFragment, Home())
-                        commit()
                     }
                 }
             }
-
-/* problemPic.editText?.setOnClickListener {
-
-
-   val intent = Intent(Intent.ACTION_GET_CONTENT)
-   intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-   intent.type = "image/*"
-   resultLauncher.launch(intent)
-
-}
-
-deletePic.setOnClickListener {
-   problemPic.editText?.setText("")
-   deletePic.visibility = View.GONE
-}
-*/
-
- */
-
-        }
+        
     }
-
 
     private var pic1ResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if(it.resultCode == Activity.RESULT_OK){
@@ -424,77 +402,6 @@ deletePic.setOnClickListener {
             }
         }
     }
-
-//    private var imageArray = ArrayList<File>()
-
-/*    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                if (it.data?.clipData != null) {
-                    val count = it.data!!.clipData!!.itemCount
-                    for (i in 0 until count) {
-                    imageArray.add(getFileFromUri(it.data!!.clipData!!.getItemAt(i).uri)!!)
-                    }
-                    createPdf(imageArray)
-                }
-            }
-        }*/
-
-
-/*
-private fun getFileFromUri(uri: Uri): File? {
-if (uri.path == null) {
-return null
-}
-var realPath = String()
-val databaseUri: Uri
-val selection: String?
-val selectionArgs: Array<String>?
-if (uri.path!!.contains("/document/image:")) {
-databaseUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-selection = "_id=?"
-selectionArgs = arrayOf(DocumentsContract.getDocumentId(uri).split(":")[1])
-} else {
-databaseUri = uri
-selection = null
-selectionArgs = null
-}
-try {
-val column = "_data"
-val projection = arrayOf(column)
-val cursor = requireContext().contentResolver.query(
-   databaseUri,
-   projection,
-   selection,
-   selectionArgs,
-   null
-)
-cursor?.let {
-   if (it.moveToFirst()) {
-       val columnIndex = cursor.getColumnIndexOrThrow(column)
-       realPath = cursor.getString(columnIndex)
-   }
-   cursor.close()
-}
-} catch (e: Exception) {
-Log.i("GetFileUri Exception:", e.message ?: "")
-}
-val path = realPath.ifEmpty {
-when {
-   uri.path!!.contains("/document/raw:") -> uri.path!!.replace(
-       "/document/raw:",
-       ""
-   )
-   uri.path!!.contains("/document/primary:") -> uri.path!!.replace(
-       "/document/primary:",
-       "/storage/emulated/0/"
-   )
-   else -> return null
-}
-}
-return File(path)
-}
-*/
 
     private fun checkFields(): Boolean {
         binding.apply {
@@ -550,38 +457,43 @@ if(image.isEmpty()){
                 val ref = storage.child("${userid!!.uid}/${dateString}/${pdfUri?.lastPathSegment}")
                 val uploadTask = pdfUri?.let { ref.putFile(it) }
                 uploadTask?.addOnFailureListener{
-                    Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"Something went wrong!", Toast.LENGTH_SHORT).show()
                     progressBar.visibility = View.GONE
                 }?.addOnSuccessListener {
-                    Toast.makeText(requireContext(),"${pdfUri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"${pdfUri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
                     progressBar.visibility = View.GONE
+
+                    val intent = Intent(this@ConsultNow, HomePatient::class.java)
+                    startActivity(intent)
+                    finish()
+
                 }
             }
             if(pic1Uri != null){
                 val ref = storage.child("${userid!!.uid}/${dateString}/${pic1Uri?.lastPathSegment}")
                 val uploadTask = pic1Uri?.let { ref.putFile(it)}
                 uploadTask?.addOnFailureListener{
-                    Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow, "Something went wrong!", Toast.LENGTH_SHORT).show()
                 }?.addOnSuccessListener {
-                    Toast.makeText(requireContext(),"${pic1Uri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"${pic1Uri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             if(pic2Uri != null){
                 val ref = storage.child("${userid!!.uid}/${dateString}/${pic2Uri?.lastPathSegment}")
                 val uploadTask = pic2Uri?.let { ref.putFile(it)}
                 uploadTask?.addOnFailureListener{
-                    Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow, "Something went wrong!", Toast.LENGTH_SHORT).show()
                 }?.addOnSuccessListener {
-                    Toast.makeText(requireContext(),"${pic2Uri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"${pic2Uri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             if(pic3Uri != null){
                 val ref = storage.child("${userid!!.uid}/${dateString}/${pic3Uri?.lastPathSegment}")
                 val uploadTask = pic3Uri?.let { ref.putFile(it)}
                 uploadTask?.addOnFailureListener{
-                    Toast.makeText(requireContext(), "Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow, "Something went wrong!", Toast.LENGTH_SHORT).show()
                 }?.addOnSuccessListener {
-                    Toast.makeText(requireContext(),"${pic3Uri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"${pic3Uri?.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             if(timerComp.isVisible){
@@ -589,9 +501,9 @@ if(image.isEmpty()){
                 val ref = storage.child("${userid!!.uid}/${dateString}/${file1.lastPathSegment}")
                 val uploadTask = ref.putFile(file1)
                 uploadTask.addOnFailureListener{
-                    Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"Something went wrong!", Toast.LENGTH_SHORT).show()
                 }.addOnSuccessListener {
-                    Toast.makeText(requireContext(),"${file1.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"${file1.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             else{
@@ -602,9 +514,9 @@ if(image.isEmpty()){
                 val ref = storage.child("${userid!!.uid}/${dateString}/${file2.lastPathSegment}")
                 val uploadTask = ref.putFile(file2)
                 uploadTask.addOnFailureListener{
-                    Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"Something went wrong!", Toast.LENGTH_SHORT).show()
                 }.addOnSuccessListener {
-                    Toast.makeText(requireContext(),"${file2.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ConsultNow,"${file2.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
                 }
             }else{
                 medicalHist = medicalHistory.editText?.text.toString()
@@ -621,125 +533,9 @@ if(image.isEmpty()){
             }
 
             database.child("Users").child(userid!!.uid).child(dateString).setValue(consult).addOnSuccessListener {
-                Toast.makeText(requireContext(), "Uploaded Successfully",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ConsultNow, "Uploaded Successfully", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-
-/*
-private fun upload(){
-val userid = mAuth.currentUser
-val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.US)
-val dateString = simpleDateFormat.format(System.currentTimeMillis())
-var chiefConsult:String? = null
-var medicalHist: String? = null
-
-binding.apply {
-if(problemPic.isNotEmpty()){
-   progressBar.visibility = View.VISIBLE
-   Log.i(LOG_TAG, "upload: ${pdfFile.path}")
-   val file3 = Uri.fromFile(File(pdfFile.path))
-   val ref = storage.child("${userid!!.uid}/${file3.lastPathSegment}")
-   val uploadTask = ref.putFile(file3)
-   uploadTask.addOnFailureListener{
-       Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_SHORT).show()
-       progressBar.visibility = View.GONE
-   }.addOnSuccessListener {
-       Toast.makeText(requireContext(),"${file3.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
-       progressBar.visibility = View.GONE
-   }
-}
-if(timerComp.isVisible){
-   val file1 = Uri.fromFile(File(fileComp))
-   val ref = storage.child("${userid!!.uid}/${file1.lastPathSegment}")
-   val uploadTask = ref.putFile(file1)
-   uploadTask.addOnFailureListener{
-       Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_SHORT).show()
-   }.addOnSuccessListener {
-       Toast.makeText(requireContext(),"${file1.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
-   }
-}
-else{
-   chiefConsult = chiefComplaint.editText?.text.toString()
-}
-if(timerHistory.isVisible){
-   val file2 = Uri.fromFile(File(fileHistory))
-   val ref = storage.child("${userid!!.uid}/${file2.lastPathSegment}")
-   val uploadTask = ref.putFile(file2)
-   uploadTask.addOnFailureListener{
-       Toast.makeText(requireContext(),"Something went wrong!", Toast.LENGTH_SHORT).show()
-   }.addOnSuccessListener {
-       Toast.makeText(requireContext(),"${file2.lastPathSegment} uploaded successfully", Toast.LENGTH_SHORT).show()
-   }
-}else{
-   medicalHist = medicalHistory.editText?.text.toString()
-}
-
-val consult: Consult = if(chiefConsult != null && medicalHist != null){
-   Consult(chiefConsult, medicalHist, problemLocation.editText?.text.toString())
-}else if (chiefConsult != null){
-   Consult(chiefComplaint = chiefConsult, problemPlace = problemLocation.editText?.text.toString())
-} else if (medicalHist != null){
-   Consult(medicalHistory = medicalHist, problemPlace = problemLocation.editText?.text.toString())
-} else{
-   Consult(problemPlace = problemLocation.editText?.text.toString())
-}
-
-database.child("Users").child(userid!!.uid).child(dateString).setValue(consult).addOnSuccessListener {
-
-   Toast.makeText(activity, "Uploaded Successfully",Toast.LENGTH_SHORT).show()
-}
-}
-}
-*/
-
-
-/*private fun createPdf(data:ArrayList<File>){
-binding.progressBar.visibility = View.VISIBLE
-pdfFile = File(requireContext().externalCacheDir
-!!.absolutePath + File.separator + "ProblemPics"
-+ System.currentTimeMillis() + ".pdf"
-)
-Toast.makeText(requireContext(), "Creating PDF, Please wait...", Toast.LENGTH_SHORT).show()
-val executor: ExecutorService = Executors.newSingleThreadExecutor()
-val handler = Handler(Looper.getMainLooper())
-
-executor.execute {
-//Background work here
-val document = PdfDocument()
-try {
-   for (item in data) {
-       Log.e(LOG_TAG, "createPdf: ${item.absolutePath}")
-       val bitmap = BitmapFactory.decodeFile(item.absolutePath)
-       val pageInfo = PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
-       val page = document.startPage(pageInfo)
-       val canvas: Canvas = page.canvas
-       val paint = Paint()
-       paint.color = Color.parseColor("#ffffff")
-       canvas.drawPaint(paint)
-       canvas.drawBitmap(bitmap, 0.0f, 0.0f, null)
-       document.finishPage(page)
-   }
-   document.writeTo(FileOutputStream(pdfFile))
-} catch (e: IOException){
-   e.printStackTrace()
-}finally {
-   document.close()
-}
-
-handler.post {
-   if(pdfFile.exists() && pdfFile.length()>0) {
-       FileUtil().openFile(requireContext(), pdfFile.absolutePath) // See: https://gist.github.com/omkar-tenkale/34d3aa1966653e6949d1ddaee1ba3355
-       binding.problemPic.editText?.setText(pdfFile.toString())
-       binding.progressBar.visibility = View.GONE
-   }else {
-       Toast.makeText(requireContext(), "Something went wrong creating the PDF :(", Toast.LENGTH_SHORT).show()
-   }
-}
-}
-
-}*/
-
-
+    
 }
