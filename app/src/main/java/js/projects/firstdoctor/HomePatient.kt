@@ -41,7 +41,6 @@ class HomePatient : AppCompatActivity(){
             when(it.itemId){
                 R.id.home -> setCurrentFragment(Home())
                 R.id.profile -> setCurrentFragment(Profile())
-                R.id.consultNow -> setCurrentFragment(Consultation())
                 R.id.notification -> setCurrentFragment(Notification())
                 R.id.research -> setCurrentFragment(Research())
 
@@ -55,6 +54,7 @@ class HomePatient : AppCompatActivity(){
     private fun setCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, fragment)
+            disallowAddToBackStack()
             commit()
         }
     }

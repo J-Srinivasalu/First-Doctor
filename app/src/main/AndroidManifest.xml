@@ -4,26 +4,27 @@
     package="js.projects.firstdoctor">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="scopedStorage"/>
-
-
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="scopedStorage" />
 
     <application
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstDoctor">
         <activity
-            android:name="js.projects.firstdoctor.userAuth.ForgotPassword"
+            android:name=".ConsultNow"
+            android:exported="false" />
+        <activity
+            android:name=".userAuth.ForgotPassword"
             android:exported="false" />
         <activity
             android:name=".HomeDoctor"
@@ -32,13 +33,13 @@
             android:name=".HomePatient"
             android:exported="false" />
         <activity
-            android:name="js.projects.firstdoctor.userAuth.Register"
+            android:name=".userAuth.Register"
             android:exported="false" />
         <activity
-            android:name="js.projects.firstdoctor.userAuth.Login"
+            android:name=".userAuth.Login"
             android:exported="false" />
         <activity
-            android:name="js.projects.firstdoctor.userAuth.WelcomeScreen"
+            android:name=".userAuth.WelcomeScreen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -57,9 +58,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>

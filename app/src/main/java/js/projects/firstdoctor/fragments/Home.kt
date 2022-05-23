@@ -11,6 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import js.projects.firstdoctor.ConsultNow
 import js.projects.firstdoctor.R
 import js.projects.firstdoctor.databinding.FragmentHomeBinding
 import js.projects.firstdoctor.utils.Connection
@@ -41,6 +42,9 @@ class Home : Fragment(R.layout.fragment_home) {
                 }
             }
 
+            consultNow.setOnClickListener {
+                startActivity(Intent(requireContext(), ConsultNow::class.java))
+            }
 
         }
 

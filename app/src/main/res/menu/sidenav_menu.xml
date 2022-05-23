@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_baseline_search_24"
             android:title="@string/research" />
         <item
-            android:id="@+id/consultNow"
-            android:icon="@drawable/doctor"
-            android:title="@string/consult_now" />
-        <item
             android:id="@+id/notification"
             android:icon="@drawable/ic_baseline_notifications_active_24"
             android:title="@string/notification" />
