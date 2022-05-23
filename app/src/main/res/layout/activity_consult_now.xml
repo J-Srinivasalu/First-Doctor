@@ -158,7 +158,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
                     android:layout_marginEnd="4dp"
-                    android:layout_weight="1"
                     android:hint="@string/where_is_the_problem"
                     app:boxStrokeColor="@color/black"
                     app:boxStrokeWidthFocused="2dp"
